@@ -6,6 +6,7 @@ import React from 'react';
     import Production from './components/Production';
     import Navigation from './components/Navigation';
     import ProductCategories from './components/ProductCategories';
+    import Settings from './components/Settings';
 
     function App() {
       return (
@@ -17,6 +18,7 @@ import React from 'react';
             <Route path="/orders" element={<Orders />} />
             <Route path="/production" element={<Production />} />
             <Route path="/product-categories" element={<ProductCategories />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/" element={<Products />} />
           </Routes>
         </div>

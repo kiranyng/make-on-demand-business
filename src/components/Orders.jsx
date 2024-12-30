@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
     import { getProducts, saveOrder, getOrders, getRawMaterials, getCategories } from '../utils/storage';
     import { FaShoppingCart } from 'react-icons/fa';
+    import localforage from 'localforage';
 
     function Orders() {
       const [products, setProducts] = useState([]);
@@ -10,6 +11,7 @@ import React, { useState, useEffect, useRef } from 'react';
       const [totalProfit, setTotalProfit] = useState(0);
       const dropZoneRef = useRef(null);
       const [categories, setCategories] = useState([]);
+      const [currency, setCurrency] = useState('USD');
 
       useEffect(() => {
         const fetchProducts = async () => {
@@ -24,9 +26,14 @@ import React, { useState, useEffect, useRef } from 'react';
           const categories = await getCategories();
           setCategories(categories);
         };
+        const fetchCurrency = async () => {
+          const storedCurrency = await localforage.getItem('currency');
+          if (storedCurrency) setCurrency(storedCurrency);
+        };
         fetchProducts();
         fetchOrders();
         fetchCategories();
+        fetchCurrency();
       }, []);
 
       const handleDragStart = (e, product) => {
@@ -92,6 +99,14 @@ import React, { useState, useEffect, useRef } from 'react';
         setTotalProfit(0);
       };
 
+      const formatCurrency = (amount) => {
+        const formatter = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: currency,
+        });
+        return formatter.format(amount);
+      };
+
       const groupedProducts = products.reduce((acc, product) => {
         if (!acc[product.category]) {
           acc[product.category] = [];
@@ -117,7 +132,7 @@ import React, { useState, useEffect, useRef } from 'react';
                     >
                       <h3 className="font-bold">{product.name}</h3>
                       <img src={product.image} alt={product.name} className="w-24 h-24 object-cover mb-2" />
-                      <p>Price: ${product.price}</p>
+                      <p>Price: {formatCurrency(product.price)}</p>
                     </div>
                   ))}
                 </div>
@@ -146,8 +161,8 @@ import React, { useState, useEffect, useRef } from 'react';
               )}
             </div>
             <div className="mb-2">
-              <p>Total Price: ${totalPrice.toFixed(2)}</p>
-              <p>Total Profit: ${totalProfit.toFixed(2)}</p>
+              <p>Total Price: {formatCurrency(totalPrice)}</p>
+              <p>Total Profit: {formatCurrency(totalProfit)}</p>
             </div>
             <div className="flex justify-between">
               <button onClick={handlePlaceOrder} className="bg-blue-500 text-white p-2 rounded flex items-center">

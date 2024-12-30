@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
     import { getOrders, getProducts, getCategories } from '../utils/storage';
+    import localforage from 'localforage';
 
     function Production() {
       const [orders, setOrders] = useState([]);
@@ -7,6 +8,7 @@ import React, { useState, useEffect } from 'react';
       const [categories, setCategories] = useState([]);
       const [productionStatus, setProductionStatus] = useState({});
       const [productionCount, setProductionCount] = useState(0);
+      const [currency, setCurrency] = useState('USD');
 
       useEffect(() => {
         const fetchOrders = async () => {
@@ -22,9 +24,14 @@ import React, { useState, useEffect } from 'react';
           const categories = await getCategories();
           setCategories(categories);
         };
+        const fetchCurrency = async () => {
+          const storedCurrency = await localforage.getItem('currency');
+          if (storedCurrency) setCurrency(storedCurrency);
+        };
         fetchOrders();
         fetchProducts();
         fetchCategories();
+        fetchCurrency();
 
         const handleNewOrder = () => {
           fetchOrders();
@@ -98,10 +105,10 @@ import React, { useState, useEffect } from 'react';
       const batchColors = ['bg-red-200', 'bg-blue-200', 'bg-green-200', 'bg-yellow-200', 'bg-purple-200', 'bg-pink-200'];
 
       return (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Today's Production</h2>
+        <div className="dark:bg-gray-700 p-4">
+          <h2 className="text-2xl font-bold mb-4 dark:text-gray-300">Today's Production</h2>
           {todaysOrders.length === 0 ? (
-            <p>No orders for today.</p>
+            <p className="dark:text-gray-300">No orders for today.</p>
           ) : (
             Object.entries(
               todaysOrders.reduce((acc, order, orderIndex) => {
@@ -117,16 +124,16 @@ import React, { useState, useEffect } from 'react';
               }, {})
             ).map(([productName, productOrders], productIndex) => (
               <div key={productIndex} className="mb-8">
-                <h3 className="text-xl font-semibold mb-2">{productName}</h3>
+                <h3 className="text-xl font-semibold mb-2 dark:text-gray-300">{productName}</h3>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full border-collapse border border-gray-300">
+                  <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600">
                     <thead>
                       <tr>
-                        <th className="border p-2">Batch</th>
+                        <th className="border p-2 dark:border-gray-600 dark:text-gray-300">Batch</th>
                         {getProductManufacturingSteps(productName).map((step, stepIndex) => (
-                          <th key={stepIndex} className="border p-2">{step}</th>
+                          <th key={stepIndex} className="border p-2 dark:border-gray-600 dark:text-gray-300">{step}</th>
                         ))}
-                        <th className="border p-2">Status</th>
+                        <th className="border p-2 dark:border-gray-600 dark:text-gray-300">Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -134,15 +141,15 @@ import React, { useState, useEffect } from 'react';
                         const batchColor = batchColors[orderIndex % batchColors.length];
                         const steps = getProductManufacturingSteps(productName);
                         return (
-                          <tr key={index} className="hover:bg-gray-100">
-                            <td className={`border p-2 ${batchColor} relative`}>
+                          <tr key={index} className="hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <td className={`border p-2 ${batchColor} relative dark:border-gray-600 dark:text-gray-300 z-10`}>
                               <span className="font-bold">{new Date(order.orderDate).toLocaleTimeString()}</span>
                               <div className="absolute top-0 left-0 p-1 text-xs bg-gray-700 text-white rounded opacity-0 hover:opacity-100 transition-opacity duration-200">
                                 Batch: {new Date(order.orderDate).toLocaleString()}
                               </div>
                             </td>
                             {steps.map((step, stepIndex) => (
-                              <td key={stepIndex} className="border p-2 text-center">
+                              <td key={stepIndex} className="border p-2 text-center dark:border-gray-600">
                                 <input
                                   type="checkbox"
                                   checked={productionStatus[orderIndex]?.[productName]?.[stepIndex]?.[itemIndex] || false}
@@ -150,7 +157,7 @@ import React, { useState, useEffect } from 'react';
                                 />
                               </td>
                             ))}
-                            <td className="border p-2 text-center">
+                            <td className="border p-2 text-center dark:border-gray-600 dark:text-gray-300">
                               {isOrderComplete(orderIndex, productName, steps) ? 'Completed' : 'In Progress'}
                             </td>
                           </tr>
