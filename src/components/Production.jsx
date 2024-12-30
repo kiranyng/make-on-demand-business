@@ -6,11 +6,13 @@ import React, { useState, useEffect } from 'react';
       const [products, setProducts] = useState([]);
       const [categories, setCategories] = useState([]);
       const [productionStatus, setProductionStatus] = useState({});
+      const [productionCount, setProductionCount] = useState(0);
 
       useEffect(() => {
         const fetchOrders = async () => {
           const orders = await getOrders();
           setOrders(orders);
+          updateProductionCount(orders);
         };
         const fetchProducts = async () => {
           const products = await getProducts();
@@ -23,7 +25,29 @@ import React, { useState, useEffect } from 'react';
         fetchOrders();
         fetchProducts();
         fetchCategories();
+
+        const handleNewOrder = () => {
+          fetchOrders();
+        };
+
+        window.addEventListener('newOrderPlaced', handleNewOrder);
+
+        return () => {
+          window.removeEventListener('newOrderPlaced', handleNewOrder);
+        };
       }, []);
+
+      const updateProductionCount = (orders) => {
+        const today = new Date().toLocaleDateString();
+        const todaysOrders = orders.filter(order => new Date(order.orderDate).toLocaleDateString() === today);
+        let count = 0;
+        todaysOrders.forEach(order => {
+          Object.values(order.products).forEach(quantity => {
+            count += quantity;
+          });
+        });
+        setProductionCount(count);
+      };
 
       const getTodaysOrders = () => {
         const today = new Date().toLocaleDateString();
@@ -41,28 +65,34 @@ import React, { useState, useEffect } from 'react';
         return [];
       };
 
-      const handleCheckboxChange = (orderIndex, productName, stepIndex, checked) => {
+      const handleCheckboxChange = (orderIndex, productName, stepIndex, itemIndex, checked) => {
         setProductionStatus(prevStatus => {
           const newStatus = { ...prevStatus };
-          if (!newStatus[orderIndex]) {
+           if (!newStatus[orderIndex]) {
             newStatus[orderIndex] = {};
           }
           if (!newStatus[orderIndex][productName]) {
             newStatus[orderIndex][productName] = {};
           }
           if (!newStatus[orderIndex][productName][stepIndex]) {
-            newStatus[orderIndex][productName][stepIndex] = {};
+             newStatus[orderIndex][productName][stepIndex] = {};
           }
-          newStatus[orderIndex][productName][stepIndex] = checked;
+          newStatus[orderIndex][productName][stepIndex][itemIndex] = checked;
           return newStatus;
         });
       };
+
 
       const isOrderComplete = (orderIndex, productName, steps) => {
         if (!productionStatus[orderIndex] || !productionStatus[orderIndex][productName]) {
           return false;
         }
-        return steps.every((_, stepIndex) => productionStatus[orderIndex][productName][stepIndex] === true);
+        return steps.every((_, stepIndex) => {
+          if (!productionStatus[orderIndex][productName][stepIndex]) {
+            return false;
+          }
+          return Object.values(productionStatus[orderIndex][productName][stepIndex]).every(val => val === true);
+        });
       };
 
       const batchColors = ['bg-red-200', 'bg-blue-200', 'bg-green-200', 'bg-yellow-200', 'bg-purple-200', 'bg-pink-200'];
@@ -80,7 +110,7 @@ import React, { useState, useEffect } from 'react';
                     acc[productName] = [];
                   }
                   for (let i = 0; i < quantity; i++) {
-                    acc[productName].push({ order, orderIndex });
+                    acc[productName].push({ order, orderIndex, itemIndex: i });
                   }
                 });
                 return acc;
@@ -100,7 +130,7 @@ import React, { useState, useEffect } from 'react';
                       </tr>
                     </thead>
                     <tbody>
-                      {productOrders.map(({ order, orderIndex }, index) => {
+                      {productOrders.map(({ order, orderIndex, itemIndex }, index) => {
                         const batchColor = batchColors[orderIndex % batchColors.length];
                         const steps = getProductManufacturingSteps(productName);
                         return (
@@ -115,8 +145,8 @@ import React, { useState, useEffect } from 'react';
                               <td key={stepIndex} className="border p-2 text-center">
                                 <input
                                   type="checkbox"
-                                  checked={productionStatus[orderIndex]?.[productName]?.[stepIndex] || false}
-                                  onChange={(e) => handleCheckboxChange(orderIndex, productName, stepIndex, e.target.checked)}
+                                  checked={productionStatus[orderIndex]?.[productName]?.[stepIndex]?.[itemIndex] || false}
+                                  onChange={(e) => handleCheckboxChange(orderIndex, productName, stepIndex, itemIndex, e.target.checked)}
                                 />
                               </td>
                             ))}

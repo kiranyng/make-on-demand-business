@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-    import { getProducts, saveOrder, getOrders, getRawMaterials } from '../utils/storage';
+    import { getProducts, saveOrder, getOrders, getRawMaterials, getCategories } from '../utils/storage';
+    import { FaShoppingCart } from 'react-icons/fa';
 
     function Orders() {
       const [products, setProducts] = useState([]);
@@ -8,6 +9,7 @@ import React, { useState, useEffect, useRef } from 'react';
       const [totalPrice, setTotalPrice] = useState(0);
       const [totalProfit, setTotalProfit] = useState(0);
       const dropZoneRef = useRef(null);
+      const [categories, setCategories] = useState([]);
 
       useEffect(() => {
         const fetchProducts = async () => {
@@ -18,8 +20,13 @@ import React, { useState, useEffect, useRef } from 'react';
           const orders = await getOrders();
           setOrders(orders);
         };
+        const fetchCategories = async () => {
+          const categories = await getCategories();
+          setCategories(categories);
+        };
         fetchProducts();
         fetchOrders();
+        fetchCategories();
       }, []);
 
       const handleDragStart = (e, product) => {
@@ -85,24 +92,37 @@ import React, { useState, useEffect, useRef } from 'react';
         setTotalProfit(0);
       };
 
+      const groupedProducts = products.reduce((acc, product) => {
+        if (!acc[product.category]) {
+          acc[product.category] = [];
+        }
+        acc[product.category].push(product);
+        return acc;
+      }, {});
+
       return (
         <div className="flex">
           <div className="w-1/2 p-4">
             <h2 className="text-2xl font-bold mb-4">Products</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {products.map((product) => (
-                <div
-                  key={product.name}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, product)}
-                  className="border p-2 cursor-grab"
-                >
-                  <h3 className="font-bold">{product.name}</h3>
-                  <img src={product.image} alt={product.name} className="w-24 h-24 object-cover mb-2" />
-                  <p>Price: ${product.price}</p>
+            {Object.entries(groupedProducts).map(([category, products]) => (
+              <div key={category} className="mb-8">
+                <h3 className="text-xl font-semibold mb-2">{category}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {products.map((product) => (
+                    <div
+                      key={product.name}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, product)}
+                      className="border p-2 cursor-grab flex flex-col"
+                    >
+                      <h3 className="font-bold">{product.name}</h3>
+                      <img src={product.image} alt={product.name} className="w-24 h-24 object-cover mb-2" />
+                      <p>Price: ${product.price}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
           <div className="w-1/2 p-4">
             <h2 className="text-2xl font-bold mb-4">Order Dropzone</h2>
@@ -130,7 +150,10 @@ import React, { useState, useEffect, useRef } from 'react';
               <p>Total Profit: ${totalProfit.toFixed(2)}</p>
             </div>
             <div className="flex justify-between">
-              <button onClick={handlePlaceOrder} className="bg-blue-500 text-white p-2 rounded">Place Order</button>
+              <button onClick={handlePlaceOrder} className="bg-blue-500 text-white p-2 rounded flex items-center">
+                <FaShoppingCart className="mr-2" />
+                Place Order
+              </button>
               <button onClick={clearDropZone} className="bg-gray-300 text-gray-700 p-2 rounded">Clear</button>
             </div>
           </div>
