@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
     import { useParams } from 'react-router-dom';
     import { getSuppliers, saveSupplier, getRawMaterials } from '../utils/storage';
-    import { FaPlus } from 'react-icons/fa';
+    import Transactions from './Transactions';
 
     function SupplierDetails() {
       const { supplierName } = useParams();
@@ -115,9 +115,7 @@ import React, { useState, useEffect } from 'react';
             </div>
           )}
           {activeTab === 'Transactions' && (
-            <div className="dark:text-gray-300">
-              <p>No transaction data available yet.</p>
-            </div>
+            <Transactions supplierName={supplierName} />
           )}
         </div>
       );

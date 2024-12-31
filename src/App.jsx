@@ -10,6 +10,7 @@ import React from 'react';
     import Suppliers from './components/Suppliers';
     import SupplierDetails from './components/SupplierDetails';
     import AddSupplier from './components/AddSupplier';
+    import ReplenishRawMaterial from './components/ReplenishRawMaterial';
 
     function App() {
       return (
@@ -17,6 +18,7 @@ import React from 'react';
           <Navigation />
           <Routes>
             <Route path="/raw-materials" element={<RawMaterials />} />
+            <Route path="/raw-materials/:materialName/replenish" element={<ReplenishRawMaterial />} />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/production" element={<Production />} />

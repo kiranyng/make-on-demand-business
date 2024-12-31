@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+    import { v4 as uuidv4 } from 'uuid';
 
     const rawMaterialsKey = 'rawMaterials';
     const productsKey = 'products';
@@ -9,7 +10,14 @@ import localforage from 'localforage';
     export const saveRawMaterial = async (material) => {
       try {
         const materials = await getRawMaterials();
-        await localforage.setItem(rawMaterialsKey, [...materials, material]);
+        const existingMaterialIndex = materials.findIndex(m => m.id === material.id);
+        if (existingMaterialIndex > -1) {
+          materials[existingMaterialIndex] = material;
+          await localforage.setItem(rawMaterialsKey, materials);
+        } else {
+          const newMaterial = { ...material, id: uuidv4() };
+          await localforage.setItem(rawMaterialsKey, [...materials, newMaterial]);
+        }
       } catch (error) {
         console.error('Error saving raw material:', error);
       }
