@@ -4,6 +4,7 @@ import localforage from 'localforage';
     const productsKey = 'products';
     const ordersKey = 'orders';
     const categoriesKey = 'categories';
+    const suppliersKey = 'suppliers';
 
     export const saveRawMaterial = async (material) => {
       try {
@@ -77,6 +78,31 @@ import localforage from 'localforage';
         return categories || [];
       } catch (error) {
         console.error('Error getting categories:', error);
+        return [];
+      }
+    };
+
+    export const saveSupplier = async (supplier) => {
+      try {
+        const suppliers = await getSuppliers();
+        const existingSupplierIndex = suppliers.findIndex(s => s.name === supplier.name);
+        if (existingSupplierIndex > -1) {
+          suppliers[existingSupplierIndex] = supplier;
+          await localforage.setItem(suppliersKey, suppliers);
+        } else {
+          await localforage.setItem(suppliersKey, [...suppliers, supplier]);
+        }
+      } catch (error) {
+        console.error('Error saving supplier:', error);
+      }
+    };
+
+    export const getSuppliers = async () => {
+      try {
+        const suppliers = await localforage.getItem(suppliersKey);
+        return suppliers || [];
+      } catch (error) {
+        console.error('Error getting suppliers:', error);
         return [];
       }
     };

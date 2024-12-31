@@ -52,6 +52,7 @@ import React, { useState, useEffect } from 'react';
                     <span className="absolute top-[-5px] right-[-5px] bg-red-500 text-white rounded-full px-2 text-xs">{newOrdersCount}</span>
                   )}
                 </NavLink>
+                <NavLink to="/suppliers" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Suppliers</NavLink>
                 <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                   <FaCog className="text-xl" />
                 </NavLink>

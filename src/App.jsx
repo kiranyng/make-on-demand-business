@@ -7,6 +7,9 @@ import React from 'react';
     import Navigation from './components/Navigation';
     import ProductCategories from './components/ProductCategories';
     import Settings from './components/Settings';
+    import Suppliers from './components/Suppliers';
+    import SupplierDetails from './components/SupplierDetails';
+    import AddSupplier from './components/AddSupplier';
 
     function App() {
       return (
@@ -19,6 +22,9 @@ import React from 'react';
             <Route path="/production" element={<Production />} />
             <Route path="/product-categories" element={<ProductCategories />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/suppliers" element={<Suppliers />} />
+            <Route path="/suppliers/add" element={<AddSupplier />} />
+            <Route path="/suppliers/:supplierName" element={<SupplierDetails />} />
             <Route path="/" element={<Products />} />
           </Routes>
         </div>
