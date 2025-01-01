@@ -75,7 +75,7 @@ import React, { useState, useEffect } from 'react';
       const handleCheckboxChange = (productName, orderIndex, itemIndex, stepIndex, checked) => {
         setProductionStatus(prevStatus => {
           const newStatus = { ...prevStatus };
-          if (!newStatus[productName]) {
+           if (!newStatus[productName]) {
             newStatus[productName] = {};
           }
           if (!newStatus[productName][orderIndex]) {
@@ -184,12 +184,22 @@ import React, { useState, useEffect } from 'react';
                               {isOrderComplete(productName, orderIndex, itemIndex, steps) ? 'Completed' : 'In Progress'}
                             </td>
                             <td className="border p-2 text-center dark:border-gray-600 dark:text-gray-300">
-                              {isOrderComplete(productName, orderIndex, itemIndex, steps) && (
-                                order.source === 'shipped' ? (
-                                  <button onClick={() => handleAction(order, productName)} className="bg-blue-500 text-white p-1 rounded disabled:opacity-50 disabled:cursor-not-allowed" disabled={!isOrderComplete(productName, orderIndex, itemIndex, steps)}>Ship</button>
-                                ) : (
-                                  <button onClick={() => handleAction(order, productName)} className="bg-green-500 text-white p-1 rounded disabled:opacity-50 disabled:cursor-not-allowed" disabled={!isOrderComplete(productName, orderIndex, itemIndex, steps)}>Add to Inventory</button>
-                                )
+                            {order.source === 'shipped' ? (
+                                <button 
+                                  onClick={() => handleAction(order, productName)} 
+                                  className={`bg-blue-500 text-white p-1 rounded ${!isOrderComplete(productName, orderIndex, itemIndex, steps) ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                                  disabled={!isOrderComplete(productName, orderIndex, itemIndex, steps)}
+                                >
+                                  Ship
+                                </button>
+                              ) : (
+                                <button 
+                                  onClick={() => handleAction(order, productName)} 
+                                  className={`bg-green-500 text-white p-1 rounded ${!isOrderComplete(productName, orderIndex, itemIndex, steps) ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                                  disabled={!isOrderComplete(productName, orderIndex, itemIndex, steps)}
+                                >
+                                  Add to Inventory
+                                </button>
                               )}
                             </td>
                           </tr>
