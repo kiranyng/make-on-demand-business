@@ -64,6 +64,7 @@ import React, { useState, useEffect, useRef } from 'react';
         const newOrder = {
           products: droppedProducts,
           orderDate: new Date().toISOString(),
+          source: 'placed',
         };
         await saveOrder(newOrder);
         setOrders([...orders, newOrder]);
@@ -81,6 +82,7 @@ import React, { useState, useEffect, useRef } from 'react';
         const newOrder = {
           products: droppedProducts,
           orderDate: new Date().toISOString(),
+          source: 'shipped',
         };
         await saveOrder(newOrder);
         setOrders([...orders, newOrder]);

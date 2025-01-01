@@ -14,6 +14,8 @@ import React, { useState, useEffect } from 'react';
       const [selectedCategory, setSelectedCategory] = useState('');
       const [isFormOpen, setIsFormOpen] = useState(false);
       const [currency, setCurrency] = useState('USD');
+      const [availableQuantity, setAvailableQuantity] = useState('');
+      const [containers, setContainers] = useState([{ location: '', quantity: '' }]);
 
       useEffect(() => {
         const fetchProducts = async () => {
@@ -46,6 +48,22 @@ import React, { useState, useEffect } from 'react';
         setSelectedCategory(e.target.value);
       };
 
+      const handleContainerChange = (index, field, value) => {
+        const newContainers = [...containers];
+        newContainers[index][field] = value;
+        setContainers(newContainers);
+      };
+
+      const addContainer = () => {
+        setContainers([...containers, { location: '', quantity: '' }]);
+      };
+
+      const removeContainer = (index) => {
+        const newContainers = [...containers];
+        newContainers.splice(index, 1);
+        setContainers(newContainers);
+      };
+
       const handleSubmit = async (e) => {
         e.preventDefault();
         const newProduct = {
@@ -53,7 +71,9 @@ import React, { useState, useEffect } from 'react';
           image,
           price: parseFloat(price),
           rawMaterials: selectedRawMaterials,
-          category: selectedCategory
+          category: selectedCategory,
+          availableQuantity: parseFloat(availableQuantity),
+          containers: containers.filter(container => container.location.trim() !== '' && container.quantity !== ''),
         };
         await saveProduct(newProduct);
         setProducts([...products, newProduct]);
@@ -62,6 +82,8 @@ import React, { useState, useEffect } from 'react';
         setPrice('');
         setSelectedRawMaterials({});
         setSelectedCategory('');
+        setAvailableQuantity('');
+        setContainers([{ location: '', quantity: '' }]);
         setIsFormOpen(false);
       };
 
@@ -108,6 +130,7 @@ import React, { useState, useEffect } from 'react';
                 <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className="border p-2 mr-2 mb-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" required />
                 <input type="text" placeholder="Image URL" value={image} onChange={(e) => setImage(e.target.value)} className="border p-2 mr-2 mb-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" required />
                 <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} className="border p-2 mr-2 mb-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" required />
+                <input type="number" placeholder="Available Quantity" value={availableQuantity} onChange={(e) => setAvailableQuantity(e.target.value)} className="border p-2 mr-2 mb-2 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" required />
                 <div className="mb-2">
                   <h3 className="text-lg font-semibold mb-2 dark:text-gray-300">Raw Materials</h3>
                   {rawMaterials.map((material) => (
@@ -132,6 +155,31 @@ import React, { useState, useEffect } from 'react';
                     ))}
                   </select>
                 </div>
+                <div className="mb-2">
+                  <h3 className="text-lg font-semibold mb-2 dark:text-gray-300">Containers</h3>
+                  {containers.map((container, index) => (
+                    <div key={index} className="flex items-center mb-1">
+                      <input
+                        type="text"
+                        placeholder="Location"
+                        value={container.location}
+                        onChange={(e) => handleContainerChange(index, 'location', e.target.value)}
+                        className="border p-1 mr-2 w-1/2 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Quantity"
+                        value={container.quantity}
+                        onChange={(e) => handleContainerChange(index, 'quantity', e.target.value)}
+                        className="border p-1 mr-2 w-1/4 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+                      />
+                      {containers.length > 1 && (
+                        <button type="button" onClick={() => removeContainer(index)} className="bg-red-500 text-white p-1 rounded">Remove</button>
+                      )}
+                    </div>
+                  ))}
+                  <button type="button" onClick={addContainer} className="bg-gray-300 text-gray-700 p-1 rounded dark:bg-gray-700 dark:text-gray-300">Add Container</button>
+                </div>
                 <p className="mb-2 dark:text-gray-300">Estimated Price: {formatCurrency(calculateEstimatedPrice())}</p>
                 <button type="submit" className="bg-blue-500 text-white p-2 rounded">Add Product</button>
               </form>
@@ -147,7 +195,9 @@ import React, { useState, useEffect } from 'react';
                       <h3 className="font-bold dark:text-gray-300">{product.name}</h3>
                       <img src={product.image} alt={product.name} className="w-32 h-32 object-cover mb-2" />
                       <p className="dark:text-gray-300">Price: {formatCurrency(product.price)}</p>
+                      <p className="dark:text-gray-300">Available Quantity: {product.availableQuantity}</p>
                       <p className="dark:text-gray-300">Raw Materials: {Object.entries(product.rawMaterials).map(([name, quantity]) => `${name}: ${quantity}`).join(', ')}</p>
+                      <p className="dark:text-gray-300">Containers: {product.containers && product.containers.map(container => `${container.location}: ${container.quantity}`).join(', ')}</p>
                     </div>
                   ))}
                 </div>

@@ -72,34 +72,56 @@ import React, { useState, useEffect } from 'react';
         return [];
       };
 
-      const handleCheckboxChange = (orderIndex, productName, stepIndex, itemIndex, checked) => {
+      const handleCheckboxChange = (productName, orderIndex, itemIndex, stepIndex, checked) => {
         setProductionStatus(prevStatus => {
           const newStatus = { ...prevStatus };
-           if (!newStatus[orderIndex]) {
-            newStatus[orderIndex] = {};
+          if (!newStatus[productName]) {
+            newStatus[productName] = {};
           }
-          if (!newStatus[orderIndex][productName]) {
-            newStatus[orderIndex][productName] = {};
+          if (!newStatus[productName][orderIndex]) {
+            newStatus[productName][orderIndex] = {};
           }
-          if (!newStatus[orderIndex][productName][stepIndex]) {
-             newStatus[orderIndex][productName][stepIndex] = {};
+          if (!newStatus[productName][orderIndex][itemIndex]) {
+            newStatus[productName][orderIndex][itemIndex] = {};
           }
-          newStatus[orderIndex][productName][stepIndex][itemIndex] = checked;
+          newStatus[productName][orderIndex][itemIndex][stepIndex] = checked;
           return newStatus;
         });
       };
 
-
-      const isOrderComplete = (orderIndex, productName, steps) => {
-        if (!productionStatus[orderIndex] || !productionStatus[orderIndex][productName]) {
+      const isOrderComplete = (productName, orderIndex, itemIndex, steps) => {
+        if (!productionStatus[productName] || !productionStatus[productName][orderIndex] || !productionStatus[productName][orderIndex][itemIndex]) {
           return false;
         }
-        return steps.every((_, stepIndex) => {
-          if (!productionStatus[orderIndex][productName][stepIndex]) {
-            return false;
+        return steps.every((_, stepIndex) => productionStatus[productName][orderIndex][itemIndex][stepIndex]);
+      };
+
+      const handleAction = async (order, productName) => {
+        if (order.source === 'shipped') {
+          alert(`Product ${productName} has been shipped.`);
+        } else if (order.source === 'placed') {
+          const materials = await localforage.getItem('rawMaterials') || [];
+          const products = await localforage.getItem('products') || [];
+          const product = products.find(p => p.name === productName);
+          if (product) {
+            const updatedMaterials = materials.map(material => {
+              if (product.rawMaterials[material.name]) {
+                return { ...material, availableQuantity: material.availableQuantity - (product.rawMaterials[material.name] * order.products[productName]) };
+              }
+              return material;
+            });
+            await localforage.setItem('rawMaterials', updatedMaterials);
           }
-          return Object.values(productionStatus[orderIndex][productName][stepIndex]).every(val => val === true);
+          alert(`Product ${productName} added to inventory.`);
+        }
+      };
+
+      const formatCurrency = (amount) => {
+        const formatter = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: currency,
         });
+        return formatter.format(amount);
       };
 
       const batchColors = ['bg-red-200', 'bg-blue-200', 'bg-green-200', 'bg-yellow-200', 'bg-purple-200', 'bg-pink-200'];
@@ -134,6 +156,7 @@ import React, { useState, useEffect } from 'react';
                           <th key={stepIndex} className="border p-2 dark:border-gray-600 dark:text-gray-300">{step}</th>
                         ))}
                         <th className="border p-2 dark:border-gray-600 dark:text-gray-300">Status</th>
+                        <th className="border p-2 dark:border-gray-600 dark:text-gray-300">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -152,13 +175,22 @@ import React, { useState, useEffect } from 'react';
                               <td key={stepIndex} className="border p-2 text-center dark:border-gray-600">
                                 <input
                                   type="checkbox"
-                                  checked={productionStatus[orderIndex]?.[productName]?.[stepIndex]?.[itemIndex] || false}
-                                  onChange={(e) => handleCheckboxChange(orderIndex, productName, stepIndex, itemIndex, e.target.checked)}
+                                  checked={productionStatus[productName]?.[orderIndex]?.[itemIndex]?.[stepIndex] || false}
+                                  onChange={(e) => handleCheckboxChange(productName, orderIndex, itemIndex, stepIndex, e.target.checked)}
                                 />
                               </td>
                             ))}
                             <td className="border p-2 text-center dark:border-gray-600 dark:text-gray-300">
-                              {isOrderComplete(orderIndex, productName, steps) ? 'Completed' : 'In Progress'}
+                              {isOrderComplete(productName, orderIndex, itemIndex, steps) ? 'Completed' : 'In Progress'}
+                            </td>
+                            <td className="border p-2 text-center dark:border-gray-600 dark:text-gray-300">
+                              {isOrderComplete(productName, orderIndex, itemIndex, steps) && (
+                                order.source === 'shipped' ? (
+                                  <button onClick={() => handleAction(order, productName)} className="bg-blue-500 text-white p-1 rounded disabled:opacity-50 disabled:cursor-not-allowed" disabled={!isOrderComplete(productName, orderIndex, itemIndex, steps)}>Ship</button>
+                                ) : (
+                                  <button onClick={() => handleAction(order, productName)} className="bg-green-500 text-white p-1 rounded disabled:opacity-50 disabled:cursor-not-allowed" disabled={!isOrderComplete(productName, orderIndex, itemIndex, steps)}>Add to Inventory</button>
+                                )
+                              )}
                             </td>
                           </tr>
                         );
