@@ -43,6 +43,7 @@ import React, { useState, useEffect } from 'react';
             <div className={`md:flex space-x-4 items-center absolute md:relative top-full left-0 md:top-0 md:left-auto w-full md:w-auto bg-gray-800 dark:bg-gray-900 p-4 md:p-0 z-20 ${isMenuOpen ? 'block' : 'hidden' } md:block`}>
               <div className="md:flex md:items-center md:space-x-4 md:ml-auto">
                 <NavLink to="/raw-materials" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Raw Materials</NavLink>
+                <NavLink to="/suppliers" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Suppliers</NavLink>
                 <NavLink to="/product-categories" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Categories</NavLink>
                 <NavLink to="/products" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Products</NavLink>
                 <NavLink to="/orders" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Orders</NavLink>
@@ -52,7 +53,6 @@ import React, { useState, useEffect } from 'react';
                     <span className="absolute top-[-5px] right-[-5px] bg-red-500 text-white rounded-full px-2 text-xs">{newOrdersCount}</span>
                   )}
                 </NavLink>
-                <NavLink to="/suppliers" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Suppliers</NavLink>
                 <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                   <FaCog className="text-xl" />
                 </NavLink>

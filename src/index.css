@@ -98,7 +98,7 @@
         @apply text-gray-300 hover:text-white block md:inline-block py-2 md:py-0 px-3;
       }
       .nav-link.active {
-        @apply text-white;
+        @apply text-white font-semibold;
       }
       .table {
         @apply w-full border-collapse;
@@ -133,259 +133,268 @@
       .form-error {
         @apply text-red-500 text-xs italic;
       }
-    }
+    
+      .product-image {
+        @apply w-full h-48 object-cover rounded-t-lg;
+      }
 
-    .product-image {
-      @apply w-full h-48 object-cover rounded-t-lg;
-    }
+      .product-card {
+        @apply bg-white rounded-lg shadow-md overflow-hidden;
+      }
 
-    .product-card {
-      @apply bg-white rounded-lg shadow-md overflow-hidden;
-    }
+      .product-details {
+        @apply p-4;
+      }
 
-    .product-details {
-      @apply p-4;
-    }
+      .product-title {
+        @apply text-lg font-semibold text-gray-900 dark:text-gray-100;
+      }
 
-    .product-title {
-      @apply text-lg font-semibold text-gray-900 dark:text-gray-100;
-    }
+      .product-price {
+        @apply text-gray-700 dark:text-gray-300;
+      }
 
-    .product-price {
-      @apply text-gray-700 dark:text-gray-300;
-    }
+      .product-category {
+        @apply text-sm text-gray-500 dark:text-gray-400;
+      }
 
-    .product-category {
-      @apply text-sm text-gray-500 dark:text-gray-400;
-    }
+      .order-card {
+        @apply bg-white rounded-lg shadow-md p-4 mb-4;
+      }
 
-    .order-card {
-      @apply bg-white rounded-lg shadow-md p-4 mb-4;
-    }
+      .order-title {
+        @apply text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2;
+      }
 
-    .order-title {
-      @apply text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2;
-    }
+      .order-date {
+        @apply text-sm text-gray-500 dark:text-gray-400;
+      }
 
-    .order-date {
-      @apply text-sm text-gray-500 dark:text-gray-400;
-    }
+      .order-products {
+        @apply mt-2;
+      }
 
-    .order-products {
-      @apply mt-2;
-    }
+      .order-product-item {
+        @apply flex items-center mb-1;
+      }
 
-    .order-product-item {
-      @apply flex items-center mb-1;
-    }
+      .order-product-image {
+        @apply w-8 h-8 object-cover mr-2;
+      }
 
-    .order-product-image {
-      @apply w-8 h-8 object-cover mr-2;
-    }
+      .order-product-name {
+        @apply text-gray-700 dark:text-gray-300;
+      }
 
-    .order-product-name {
-      @apply text-gray-700 dark:text-gray-300;
-    }
+      .order-total {
+        @apply mt-4 text-gray-900 dark:text-gray-100;
+      }
 
-    .order-total {
-      @apply mt-4 text-gray-900 dark:text-gray-100;
-    }
+      .order-profit {
+        @apply text-sm text-green-600 dark:text-green-400;
+      }
 
-    .order-profit {
-      @apply text-sm text-green-600 dark:text-green-400;
-    }
+      .dropzone {
+        @apply border-2 border-dashed border-gray-400 dark:border-gray-600 rounded-md p-4 text-center cursor-pointer;
+      }
 
-    .dropzone {
-      @apply border-2 border-dashed border-gray-400 dark:border-gray-600 rounded-md p-4 text-center cursor-pointer;
-    }
+      .dropzone-active {
+        @apply border-blue-500;
+      }
 
-    .dropzone-active {
-      @apply border-blue-500;
-    }
+      .dropzone-text {
+        @apply text-gray-500 dark:text-gray-400;
+      }
 
-    .dropzone-text {
-      @apply text-gray-500 dark:text-gray-400;
-    }
+      .category-card {
+        @apply bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4;
+      }
 
-    .category-card {
-      @apply bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4;
-    }
+      .category-title {
+        @apply text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2;
+      }
 
-    .category-title {
-      @apply text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2;
-    }
+      .category-description {
+        @apply text-gray-700 dark:text-gray-300 mb-2;
+      }
 
-    .category-description {
-      @apply text-gray-700 dark:text-gray-300 mb-2;
-    }
+      .category-stages {
+        @apply text-sm text-gray-500 dark:text-gray-400;
+      }
 
-    .category-stages {
-      @apply text-sm text-gray-500 dark:text-gray-400;
-    }
+      .raw-material-item {
+        @apply flex items-center justify-between border-b border-gray-200 dark:border-gray-700 py-2;
+      }
 
-    .raw-material-item {
-      @apply flex items-center justify-between border-b border-gray-200 dark:border-gray-700 py-2;
-    }
+      .raw-material-name {
+        @apply text-gray-900 dark:text-gray-100 font-medium;
+      }
 
-    .raw-material-name {
-      @apply text-gray-900 dark:text-gray-100 font-medium;
-    }
+      .raw-material-details {
+        @apply text-gray-700 dark:text-gray-300;
+      }
 
-    .raw-material-details {
-      @apply text-gray-700 dark:text-gray-300;
-    }
+      .toggle-button {
+        @apply bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 rounded-md w-full flex items-center justify-between;
+      }
 
-    .toggle-button {
-      @apply bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 rounded-md w-full flex items-center justify-between;
-    }
+      .toggle-button-icon {
+        @apply ml-2;
+      }
 
-    .toggle-button-icon {
-      @apply ml-2;
-    }
+      .form-container {
+        @apply mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-md;
+      }
 
-    .form-container {
-      @apply mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-md;
-    }
+      .form-input,
+      .form-textarea,
+      .form-select {
+        @apply mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm;
+      }
 
-    .form-input,
-    .form-textarea,
-    .form-select {
-      @apply mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm;
-    }
+      .form-label {
+        @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+      }
 
-    .form-label {
-      @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
-    }
+      .submit-button {
+        @apply w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+      }
 
-    .submit-button {
-      @apply w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
-    }
+      .nav-container {
+        @apply bg-gray-800 dark:bg-gray-900 text-white p-4;
+      }
 
-    .nav-container {
-      @apply bg-gray-800 dark:bg-gray-900 text-white p-4;
-    }
+      .nav-logo {
+        @apply text-lg font-bold;
+      }
 
-    .nav-logo {
-      @apply text-lg font-bold;
-    }
+      .nav-links {
+        @apply mt-4 md:mt-0 space-y-4 md:space-y-0 md:space-x-4;
+      }
 
-    .nav-links {
-      @apply mt-4 md:mt-0 space-y-4 md:space-y-0 md:space-x-4;
-    }
+      .nav-link {
+        @apply block text-gray-300 hover:text-white;
+      }
 
-    .nav-link {
-      @apply block text-gray-300 hover:text-white;
-    }
+      .nav-link.active {
+        @apply text-white font-semibold;
+      }
 
-    .nav-link.active {
-      @apply text-white font-semibold;
-    }
+      .production-table {
+        @apply w-full table-auto;
+      }
 
-    .production-table {
-      @apply w-full table-auto;
-    }
+      .production-table th,
+      .production-table td {
+        @apply px-4 py-2 border-b border-gray-200 dark:border-gray-700;
+      }
 
-    .production-table th,
-    .production-table td {
-      @apply px-4 py-2 border-b border-gray-200 dark:border-gray-700;
-    }
+      .production-table th {
+        @apply text-left text-gray-700 dark:text-gray-300 font-semibold;
+      }
 
-    .production-table th {
-      @apply text-left text-gray-700 dark:text-gray-300 font-semibold;
-    }
+      .production-table td {
+        @apply text-gray-900 dark:text-gray-100;
+      }
 
-    .production-table td {
-      @apply text-gray-900 dark:text-gray-100;
-    }
+      .production-table tr:nth-child(even) {
+        @apply bg-gray-50 dark:bg-gray-800;
+      }
 
-    .production-table tr:nth-child(even) {
-      @apply bg-gray-50 dark:bg-gray-800;
-    }
+      .production-table tr:hover {
+        @apply bg-gray-100 dark:bg-gray-700;
+      }
 
-    .production-table tr:hover {
-      @apply bg-gray-100 dark:bg-gray-700;
-    }
+      .batch-number {
+        @apply font-bold;
+      }
 
-    .batch-number {
-      @apply font-bold;
-    }
+      .production-status {
+        @apply font-semibold;
+      }
 
-    .production-status {
-      @apply font-semibold;
-    }
+      .status-completed {
+        @apply text-green-600 dark:text-green-400;
+      }
 
-    .status-completed {
-      @apply text-green-600 dark:text-green-400;
-    }
+      .status-in-progress {
+        @apply text-yellow-600 dark:text-yellow-400;
+      }
 
-    .status-in-progress {
-      @apply text-yellow-600 dark:text-yellow-400;
-    }
+      .settings-option {
+        @apply mb-4;
+      }
 
-    .settings-option {
-      @apply mb-4;
-    }
+      .settings-label {
+        @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+      }
 
-    .settings-label {
-      @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
-    }
+      .settings-input {
+        @apply mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800;
+      }
 
-    .settings-input {
-      @apply mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800;
-    }
+      .settings-select {
+        @apply block appearance-none w-full bg-white dark:bg-gray-800 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline text-gray-700 dark:text-gray-300;
+      }
 
-    .settings-select {
-      @apply block w-full mt-1 rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800;
-    }
+      .danger-zone {
+        @apply border-t border-gray-200 dark:border-gray-700 mt-8 pt-8;
+      }
 
-    .danger-zone {
-      @apply border-t border-gray-200 dark:border-gray-700 mt-8 pt-8;
-    }
+      .danger-zone-title {
+        @apply text-xl font-bold text-red-600 dark:text-red-400 mb-4;
+      }
 
-    .danger-zone-title {
-      @apply text-xl font-bold text-red-600 dark:text-red-400 mb-4;
-    }
+      .danger-zone-button {
+        @apply bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded;
+      }
 
-    .danger-zone-button {
-      @apply bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded;
-    }
+      .confirmation-modal {
+        @apply fixed z-10 inset-0 overflow-y-auto;
+      }
 
-    .confirmation-modal {
-      @apply fixed z-10 inset-0 overflow-y-auto;
-    }
+      .confirmation-modal-overlay {
+        @apply fixed inset-0 transition-opacity;
+      }
 
-    .confirmation-modal-overlay {
-      @apply fixed inset-0 transition-opacity;
-    }
+      .confirmation-modal-bg {
+        @apply absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75;
+      }
 
-    .confirmation-modal-bg {
-      @apply absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75;
-    }
+      .confirmation-modal-container {
+        @apply mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full;
+      }
 
-    .confirmation-modal-container {
-      @apply mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full;
-    }
+      .confirmation-modal-content {
+        @apply px-6 py-4;
+      }
 
-    .confirmation-modal-content {
-      @apply px-6 py-4;
-    }
+      .confirmation-modal-text {
+        @apply text-gray-900 dark:text-gray-300;
+      }
 
-    .confirmation-modal-text {
-      @apply text-gray-900 dark:text-gray-300;
-    }
+      .confirmation-modal-buttons {
+        @apply flex justify-end mt-4;
+      }
 
-    .confirmation-modal-buttons {
-      @apply flex justify-end mt-4;
-    }
+      .confirmation-modal-button {
+        @apply px-4 py-2 ml-2 text-sm font-medium rounded-md;
+      }
 
-    .confirmation-modal-button {
-      @apply px-4 py-2 ml-2 text-sm font-medium rounded-md;
-    }
+      .confirmation-modal-button.yes {
+        @apply bg-red-500 hover:bg-red-700 text-white;
+      }
 
-    .confirmation-modal-button.yes {
-      @apply bg-red-500 hover:bg-red-700 text-white;
-    }
-
-    .confirmation-modal-button.no {
-      @apply bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200;
+      .confirmation-modal-button.no {
+        @apply bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200;
+      }
+      .collapsed-sidebar {
+        @apply w-24 flex-col;
+      }
+      .expanded-sidebar {
+        @apply w-1/2;
+      }
+      .collapsed-sidebar-end {
+        @apply w-24 flex-col ml-auto;
+      }
     }
